@@ -56,15 +56,22 @@ docker stop my-restapi-container
 docker rm my-restapi-container
 ```
 
-## Deploying to a Local Kubernetes Cluster (e.g., Minikube, Kind, Docker Desktop)
+## Deploying to a Local Kubernetes Cluster (e.g., Minikube, Kind, MicroK8s, Docker Desktop)
 
 1.  **Prerequisites:**
-    *   A running local Kubernetes cluster.
-    *   `kubectl` configured to interact with your cluster.
+    *   A running local Kubernetes cluster (like MicroK8s).
+    *   `kubectl` (or `microk8s kubectl`) configured to interact with your cluster.
     *   The Docker image `restapi-server:latest` built (see "Building and Running with Docker" above).
 
 2.  **Load Docker Image into Cluster:**
     Make the locally built `restapi-server:latest` image available to your cluster. The command depends on your specific local cluster tool:
+    *   **MicroK8s:**
+        ```bash
+        docker save restapi-server:latest > restapi-server.tar
+        microk8s ctr image import restapi-server.tar
+        rm restapi-server.tar 
+        ```
+        *(Ensure the MicroK8s container runtime (`ctr`) is enabled: `microk8s status --wait-ready`)*
     *   **Minikube:** `minikube image load restapi-server:latest`
     *   **Kind:** `kind load docker-image restapi-server:latest`
     *   **k3d:** `k3d image import restapi-server:latest`
@@ -117,17 +124,18 @@ docker rm my-restapi-container
 4.  **Apply Manifests:**
     Apply the deployment and service configurations to your cluster:
     ```bash
-    kubectl apply -f deployment.yaml
-    kubectl apply -f service.yaml
+    microk8s kubectl apply -f deployment.yaml
+    microk8s kubectl apply -f service.yaml
     ```
 
 5.  **Access the Service:**
     *   Find the NodePort assigned to the service:
         ```bash
-        kubectl get service restapi-service
+        microk8s kubectl get service restapi-service
         ```
         Look for the port mapping under the `PORT(S)` column (e.g., `3000:3XXXX/TCP`). The `3XXXX` part is the NodePort.
     *   Find the IP address of your cluster node (this varies depending on the tool):
+        *   **MicroK8s:** Often the machine's primary IP, or try `microk8s kubectl get node -o wide` to find an EXTERNAL-IP or INTERNAL-IP. `localhost` might also work if accessing from the same machine.
         *   **Minikube:** `minikube ip`
         *   **Kind/Docker Desktop:** Usually `localhost` or `127.0.0.1` works.
     *   Access the service using the Node IP and NodePort:
@@ -137,13 +145,13 @@ docker rm my-restapi-container
         ```
     *   Alternatively, use port-forwarding (runs in the foreground):
         ```bash
-        kubectl port-forward service/restapi-service 8080:3000
+        microk8s kubectl port-forward service/restapi-service 8080:3000
         ```
         Then access via `curl http://localhost:8080` in another terminal.
 
 6.  **Clean Up:**
     To remove the deployment and service from your cluster:
     ```bash
-    kubectl delete -f service.yaml
-    kubectl delete -f deployment.yaml
+    microk8s kubectl delete -f service.yaml
+    microk8s kubectl delete -f deployment.yaml
     ```
