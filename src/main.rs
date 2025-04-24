@@ -15,8 +15,7 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-// Basic handler that responds with a static string.
-async fn root() -> &'static str {
-    "Hello, World!"
-    //write also Hello Dennis AI!
+// Basic handler that responds with a concatenated string.
+async fn root() -> String {
+    format!("Hello, World! Hello Dennis AI!")
 }
