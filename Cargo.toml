@@ -1,7 +1,7 @@
 [package]
 name = "restapi"
 version = "0.1.0"
-edition = "2024" # Make sure this is 2021 or later for async main
+edition = "2021" # Changed from 2024 for compatibility with rust:1.78
 
 [dependencies]
 axum = "0.7"
