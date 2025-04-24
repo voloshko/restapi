@@ -1,10 +1,4 @@
-fn main() {
-    println!("Hello, world!");
-}
-use axum::{
-    routing::get,
-    Router,
-};
+use axum::{routing::get, Router};
 use std::net::SocketAddr;
 
 #[tokio::main]
@@ -24,4 +18,5 @@ async fn main() {
 // Basic handler that responds with a static string.
 async fn root() -> &'static str {
     "Hello, World!"
+    //write also Hello Dennis AI!
 }
