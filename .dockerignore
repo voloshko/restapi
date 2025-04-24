@@ -1,0 +1,5 @@
+# Ignore git directory
+.git
+
+# Ignore build artifacts
+target/
