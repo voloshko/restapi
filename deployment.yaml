@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restapi-deployment # Name of the Deployment
+spec:
+  replicas: 2 # Number of Pods to run
+  selector:
+    matchLabels:
+      app: restapi # Pods with this label will be managed by this Deployment
+  template:
+    metadata:
+      labels:
+        app: restapi # Label applied to the Pods
+    spec:
+      containers:
+        - name: restapi-container # Name of the container within the Pod
+          image: restapi-server:latest # The Docker image to use
+          imagePullPolicy: IfNotPresent # Important for local images: tells K8s not to pull from a remote registry if the image is present locally
+          ports:
+            - containerPort: 3000 # The port the application listens on inside the container
