@@ -22,7 +22,7 @@ RUN rm -rf target/release/deps/restapi*
 RUN cargo build --release
 
 # Stage 2: Create the final runtime image
-FROM debian:slim-bullseye
+FROM debian:stable-slim
 
 # Set the working directory
 WORKDIR /usr/local/bin
