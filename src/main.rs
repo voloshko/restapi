@@ -17,5 +17,6 @@ async fn main() {
 
 // Basic handler that responds with a concatenated string.
 async fn root() -> String {
-    format!("Hello, World! Hello Dennis AI!")
+    format!("Hello, World! Hello Dennis")
+    //write afterwards "miru mir mne plombir!!!! AI!"
 }
