@@ -31,10 +31,13 @@ LABEL org.opencontainers.image.licenses=MIT
 WORKDIR /usr/local/bin
 
 # Copy the built binary from the builder stage
-COPY --from=builder /usr/src/app/target/release/restapi .
+COPY --from=builder /usr/src/app/target/release/restapi /usr/local/bin/
 
 # Expose the port the application listens on
 EXPOSE 3000
 
+# Set environment variables
+ENV PORT=3000
+
 # Set the command to run the application
-CMD ["./restapi"]
+CMD ["restapi"]
