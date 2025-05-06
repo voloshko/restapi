@@ -26,6 +26,9 @@ This is a simple REST API server built with Rust and the Axum framework.
 
 ## Building and Running with Docker
 
+You can either build locally or use the pre-built image from GitHub Container Registry.
+
+### Option 1: Build Locally
 1.  **Build the Docker image:**
     ```bash
     docker build -t restapi-server .
@@ -36,6 +39,23 @@ This is a simple REST API server built with Rust and the Axum framework.
     docker run -d -p 3000:3000 --name my-restapi-container restapi-server
     ```
     This runs the container in detached mode and maps port 3000.
+
+### Option 2: Use Pre-built Image from GHCR
+The container image is automatically built and published to GitHub Container Registry. You can pull it with:
+
+```bash
+docker pull ghcr.io/voloshko/restapi:latest
+```
+
+Then run it with:
+```bash
+docker run -d -p 3000:3000 --name my-restapi-container ghcr.io/voloshko/restapi:latest
+```
+
+> **Note:** You may need to authenticate first:
+> ```bash
+> echo $GITHUB_TOKEN | docker login ghcr.io -u voloshko --password-stdin
+> ```
 
 ## Testing the API
 
@@ -98,8 +118,8 @@ docker rm my-restapi-container
             spec:
               containers:
                 - name: restapi-container
-                  image: restapi-server:latest
-                  imagePullPolicy: IfNotPresent # Or Never
+                  image: ghcr.io/voloshko/restapi:latest
+                  imagePullPolicy: Always
                   ports:
                     - containerPort: 3000
         ```
