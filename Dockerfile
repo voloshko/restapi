@@ -4,15 +4,15 @@ FROM rust:1.78 as builder
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy the Cargo configuration files
+# Create empty project for initial build
+RUN mkdir src && echo "fn main() {}" > src/main.rs
 COPY Cargo.toml Cargo.lock ./
 
 # Build dependencies first to leverage Docker cache
-# Create a dummy main.rs to build only dependencies
-RUN mkdir src && echo "fn main() {}" > src/main.rs
 RUN cargo build --release
-# Remove dummy file after building dependencies
-RUN rm -f src/main.rs
+
+# Clean up dummy files
+RUN rm -rf src
 
 # Copy the actual source code
 COPY src ./src
