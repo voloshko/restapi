@@ -4,23 +4,24 @@ FROM rust:1.78 as builder
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Create workspace and copy dependency files first
+# Set working directory
 WORKDIR /usr/src/app
+
+# First copy only the files needed for dependency resolution
 COPY Cargo.toml ./
 
-# Create dummy src/main.rs if Cargo.lock doesn't exist
+# Create dummy source files and generate lockfile
 RUN mkdir -p src && \
-    if [ ! -f Cargo.lock ]; then \
-        echo "fn main() {}" > src/main.rs && \
-        cargo generate-lockfile && \
-        rm src/main.rs; \
-    fi
+    echo "fn main() {}" > src/main.rs && \
+    cargo generate-lockfile
 
-# Copy lock file if it exists
+# Now copy the real source files
+COPY src ./src
 COPY Cargo.lock ./
 
-# Build dependencies first
-RUN cargo build --release
+# Clean any previous build and rebuild with real sources
+RUN rm -rf target && \
+    cargo build --release
 
 # Copy the actual source code
 COPY src ./src

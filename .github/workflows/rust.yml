@@ -51,6 +51,12 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+    - name: Verify files exist
+      run: |
+        ls -la
+        test -f Cargo.toml && echo "Cargo.toml exists"
+        test -f Cargo.lock && echo "Cargo.lock exists"
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
