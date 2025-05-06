@@ -1,6 +1,6 @@
 use axum::{routing::get, Router};
-use std::net::SocketAddr;
 use std::env;
+use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {
@@ -12,7 +12,7 @@ async fn main() {
         .ok()
         .and_then(|p| p.parse().ok())
         .unwrap_or(3000);
-    
+
     // Define the address to run the server on.
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     println!("listening on {}", addr);
@@ -24,5 +24,5 @@ async fn main() {
 
 // Basic handler that responds with a concatenated string.
 async fn root() -> String {
-    format!("Heya! 🌈 What's up, Dennis? miru mir mne plombir!!!! AI!")
+    format!("Heya! 🌈 What's up, Dennis??? miru mir mne plombir!!!! AI!")
 }
