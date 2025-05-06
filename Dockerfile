@@ -23,6 +23,9 @@ RUN cargo build --release
 
 # Stage 2: Create the final runtime image
 FROM debian:stable-slim
+LABEL org.opencontainers.image.source="https://github.com/voloshko/restapi"
+LABEL org.opencontainers.image.description="Rust REST API service"
+LABEL org.opencontainers.image.licenses=MIT
 
 # Set the working directory
 WORKDIR /usr/local/bin
