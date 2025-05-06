@@ -10,14 +10,12 @@ WORKDIR /usr/src/app
 # First copy only the files needed for dependency resolution
 COPY Cargo.toml ./
 
-# Create dummy source files and generate lockfile
-RUN mkdir -p src && \
-    echo "fn main() {}" > src/main.rs && \
-    cargo generate-lockfile
-
-# Now copy the real source files
+# Copy source files and Cargo.lock
 COPY src ./src
 COPY Cargo.lock ./
+
+# Generate lockfile if it doesn't exist
+RUN if [ ! -f Cargo.lock ]; then cargo generate-lockfile; fi
 
 # Clean any previous build and rebuild with real sources
 RUN rm -rf target && \

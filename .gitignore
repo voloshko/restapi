@@ -1,7 +1,4 @@
 .aider*
 
-# Ignore Cargo lock file
-/Cargo.lock
-
 # Ignore build artifacts directory
 /target/
